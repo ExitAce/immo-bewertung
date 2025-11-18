@@ -2,6 +2,8 @@
 
 import React from 'react';
 import SectionCard from '../common/SectionCard';
+import NumberInput from '../common/NumberInput';
+import { HelpCircle } from 'lucide-react';
 
 interface ModernisationSectionProps {
   fiktivesBaujahrBMF?: number;
@@ -36,35 +38,27 @@ export default function ModernisationSection(props: ModernisationSectionProps) {
 
         {props.fiktiveBaujahreAktiv && (
           <div className="grid grid-cols-2 gap-4 pl-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Fiktives Baujahr (BMF)
-              </label>
-              <input
-                type="number"
-                value={props.fiktivesBaujahrBMF || ''}
-                onChange={(e) => props.onChange('fiktivesBaujahrBMF', e.target.value ? parseInt(e.target.value) : undefined)}
-                placeholder="z.B. 2010"
-                min="1800"
-                max={new Date().getFullYear()}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
+            <NumberInput
+              label="Fiktives Baujahr (BMF)"
+              value={props.fiktivesBaujahrBMF}
+              onChange={(value) => props.onChange('fiktivesBaujahrBMF', value)}
+              decimals={0}
+              min={1800}
+              max={new Date().getFullYear()}
+              placeholder="z.B. 2010"
+              helpText="Für steuerliche Bewertung nach BMF"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Fiktives Baujahr (ImmoWertV)
-              </label>
-              <input
-                type="number"
-                value={props.fiktivesBaujahrImmoWertV || ''}
-                onChange={(e) => props.onChange('fiktivesBaujahrImmoWertV', e.target.value ? parseInt(e.target.value) : undefined)}
-                placeholder="z.B. 2015"
-                min="1800"
-                max={new Date().getFullYear()}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
+            <NumberInput
+              label="Fiktives Baujahr (ImmoWertV)"
+              value={props.fiktivesBaujahrImmoWertV}
+              onChange={(value) => props.onChange('fiktivesBaujahrImmoWertV', value)}
+              decimals={0}
+              min={1800}
+              max={new Date().getFullYear()}
+              placeholder="z.B. 2015"
+              helpText="Für Verkehrswertermittlung"
+            />
           </div>
         )}
       </div>
@@ -85,60 +79,45 @@ export default function ModernisationSection(props: ModernisationSectionProps) {
 
         {props.liegenschaftszinsAktiv && (
           <div className="pl-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Liegenschaftszins (%)
-            </label>
-            <input
-              type="number"
-              value={props.liegenschaftszins || ''}
-              onChange={(e) => props.onChange('liegenschaftszins', e.target.value ? parseFloat(e.target.value) : undefined)}
-              placeholder="z.B. 4.5"
-              min="0"
-              max="100"
-              step="0.1"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            <NumberInput
+              label="Liegenschaftszins"
+              value={props.liegenschaftszins}
+              onChange={(value) => props.onChange('liegenschaftszins', value)}
+              unit="%"
+              decimals={2}
+              min={0}
+              max={100}
+              placeholder="z.B. 4,5"
+              helpText="Kapitalisierungszinssatz für das Ertragswertverfahren"
             />
           </div>
         )}
       </div>
 
       {/* Restnutzungsdauer */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Restnutzungsdauer (Jahre)
-        </label>
-        <input
-          type="number"
-          value={props.restnutzungsdauer || ''}
-          onChange={(e) => props.onChange('restnutzungsdauer', e.target.value ? parseInt(e.target.value) : undefined)}
-          placeholder="z.B. 50"
-          min="0"
-          max="200"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Die wirtschaftliche Restnutzungsdauer des Gebäudes
-        </p>
-      </div>
+      <NumberInput
+        label="Restnutzungsdauer"
+        value={props.restnutzungsdauer}
+        onChange={(value) => props.onChange('restnutzungsdauer', value)}
+        unit="Jahre"
+        decimals={0}
+        min={0}
+        max={200}
+        placeholder="z.B. 50"
+        helpText="Die wirtschaftliche Restnutzungsdauer des Gebäudes"
+      />
 
       {/* Reparatur-/Investitionsbedarf */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Reparatur-/Investitionsbedarf (EUR)
-        </label>
-        <input
-          type="number"
-          value={props.reparaturInvestitionsbedarf || ''}
-          onChange={(e) => props.onChange('reparaturInvestitionsbedarf', e.target.value ? parseFloat(e.target.value) : undefined)}
-          placeholder="z.B. 25000"
-          min="0"
-          step="1000"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Kosten für notwendige Sanierungen oder Modernisierungen
-        </p>
-      </div>
+      <NumberInput
+        label="Reparatur-/Investitionsbedarf"
+        value={props.reparaturInvestitionsbedarf}
+        onChange={(value) => props.onChange('reparaturInvestitionsbedarf', value)}
+        unit="EUR"
+        decimals={0}
+        min={0}
+        placeholder="z.B. 25.000"
+        helpText="Kosten für notwendige Sanierungen oder Modernisierungen"
+      />
     </SectionCard>
   );
 }

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calculator, History, AlertCircle } from 'lucide-react';
+import { AlertCircle, Calculator } from 'lucide-react';
+import HeroSection from '@/components/common/HeroSection';
 import AddressSection from '@/components/forms/AddressSection';
 import ObjectSection from '@/components/forms/ObjectSection';
 import ModernisationSection from '@/components/forms/ModernisationSection';
@@ -211,39 +212,11 @@ export default function HomePage() {
       {isLoadingBoris && <LoadingOverlay message="BORIS-Portal wird durchsucht..." />}
       {isLoadingValuation && <LoadingOverlay message="Bewertung wird berechnet..." />}
 
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Calculator className="w-8 h-8 text-blue-600" />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Immobilienbewertung</h1>
-                <p className="text-sm text-gray-600 mt-1">
-                  Automatisierte Bewertung nach ImmoWertV 2021
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Hero Section with FAQ */}
+      <HeroSection />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Disclaimer */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-          <div className="flex items-start space-x-3">
-            <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-yellow-800">
-              <p className="font-medium">Wichtiger Hinweis:</p>
-              <p className="mt-1">
-                Diese Bewertung ist eine unverbindliche, automatisierte Berechnung und stellt
-                keine Rechts- oder Steuerberatung dar. Für rechtlich verbindliche Gutachten
-                konsultieren Sie bitte einen zertifizierten Sachverständigen.
-              </p>
-            </div>
-          </div>
-        </div>
 
         {/* Error Display */}
         {error && (

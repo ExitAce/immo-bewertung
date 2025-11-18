@@ -3,6 +3,7 @@
 import React from 'react';
 import { Search, CheckCircle, AlertCircle } from 'lucide-react';
 import SectionCard from '../common/SectionCard';
+import NumberInput from '../common/NumberInput';
 import type { BorisResult } from '@/lib/types';
 
 interface LandSectionProps {
@@ -21,41 +22,53 @@ export default function LandSection(props: LandSectionProps) {
       description="Angaben zum Grundstück und Bodenrichtwert"
     >
       {/* Grundstücksfläche */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Grundstücksfläche (m²)
-        </label>
-        <input
-          type="number"
-          value={props.grundstuecksflaeche || ''}
-          onChange={(e) => props.onChange('grundstuecksflaeche', e.target.value ? parseFloat(e.target.value) : undefined)}
-          placeholder="z.B. 500"
-          min="0"
-          step="1"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-      </div>
+      <NumberInput
+        label="Grundstücksfläche"
+        value={props.grundstuecksflaeche}
+        onChange={(value) => props.onChange('grundstuecksflaeche', value)}
+        unit="m²"
+        decimals={2}
+        min={0}
+        placeholder="z.B. 500"
+        helpText="Gesamtfläche des Grundstücks"
+      />
 
       {/* Bodenrichtwert */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Bodenrichtwert (EUR/m²)
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+          Bodenrichtwert
         </label>
         <div className="flex gap-2">
-          <input
-            type="number"
-            value={props.bodenrichtwert || ''}
-            onChange={(e) => props.onChange('bodenrichtwert', e.target.value ? parseFloat(e.target.value) : undefined)}
-            placeholder="z.B. 350"
-            min="0"
-            step="1"
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          <div className="flex-1">
+            <div className="relative">
+              <input
+                type="text"
+                inputMode="decimal"
+                value={props.bodenrichtwert !== undefined
+                  ? new Intl.NumberFormat('de-DE', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }).format(props.bodenrichtwert)
+                  : ''
+                }
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\./g, '').replace(',', '.');
+                  const num = parseFloat(value);
+                  props.onChange('bodenrichtwert', isNaN(num) ? undefined : num);
+                }}
+                placeholder="z.B. 350,00"
+                className="w-full px-3 py-2 pr-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-colors"
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <span className="text-gray-500 text-sm font-medium">EUR/m²</span>
+              </div>
+            </div>
+          </div>
           <button
             type="button"
             onClick={props.onBorisResearch}
             disabled={props.isLoadingBoris}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2 transition-colors shadow-sm"
           >
             {props.isLoadingBoris ? (
               <>
@@ -70,7 +83,7 @@ export default function LandSection(props: LandSectionProps) {
             )}
           </button>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 mt-1.5">
           Nutzen Sie die BORIS-Recherche, um den aktuellen Bodenrichtwert automatisch zu ermitteln
         </p>
       </div>

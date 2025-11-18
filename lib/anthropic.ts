@@ -72,7 +72,7 @@ export async function callAnthropic(
     if (useWebSearch) {
       messageParams.tools = [
         {
-          type: 'web_search_20250124' as any, // Web search tool
+          type: 'web_search_20250305' as any, // Web search tool (updated to latest version)
           name: 'web_search',
           web_search: {},
         } as any,
